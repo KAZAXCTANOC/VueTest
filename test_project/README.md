@@ -1,19 +1,20 @@
 # test_project
+## Тестовый проект для изучения VUE 
 
-## Project setup
+## Настройка проекта
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Компилиция и горячая перезагрузка во время разработки
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Компилиция проекта под прод
 ```
 npm run build
 ```
 
-### Customize configuration
+### Настройка конфигурации
 See [Configuration Reference](https://cli.vuejs.org/config/).
