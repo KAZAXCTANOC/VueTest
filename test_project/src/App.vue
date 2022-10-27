@@ -1,6 +1,9 @@
 <template>
     <div class="app">
-        <MyButton @click="showDilaog">Добавить пост</MyButton>
+        <div class="app_buttons">
+            <MyButton @click="showDilaog">Добавить пост</MyButton>
+            <my-select v-model="selectedSource" :options="sortOptions"/>
+        </div>
         <my-dialog v-model:show="dialogVisible">
             <PostForm @create="createPost"/>
         </my-dialog>
@@ -12,6 +15,7 @@
 <script>
     import PostForm from './components/PostForm.vue';
     import PostList from './components/PostList.vue';
+    import axios from 'axios';
 
     export default {
         components:{
@@ -27,20 +31,49 @@
                     { id:3, title: "Post name 4",body: "Body post number 4"},
                 ],
 
-                dialogVisible: false
+                dialogVisible: false,
+                selectedSource:'',
+                sortOptions:[
+                    {value: 'title', name: "По названию"},
+                    {value: 'body', name: "По содержанию"}
+                ]
             }
         },
 
         methods: {
-            createPost(post){
+            createPost(post) {
                 this.posts.push(post);
                 this.dialogVisible = false;
             },
-            removePost(post){
+
+            removePost(post) {
                 this.posts = this.posts.filter(el => el.id !== post.id);
             },
-            showDilaog(){
+
+            showDilaog() {
                 this.dialogVisible = true;
+            },
+
+            async getData() {
+                try {
+                    const responce = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+                    this.posts = responce.data;
+                    console.log(responce.data);
+                } catch (error) {
+                    alert(error);
+                }
+            },
+        },
+            
+        mounted() {
+            this.getData();
+        },
+
+        watch: {
+            selectedSource(newValue){
+                this.posts.sort((post1, post2) => {
+                    return post1[newValue]?.localeCompare(post2[newValue]);
+                })
             }
         }
     }
@@ -55,5 +88,10 @@
 
     .app{
         padding: 20px;
+    }
+
+    .app_buttons{
+        display: flex;
+        justify-content: space-between;
     }
 </style>

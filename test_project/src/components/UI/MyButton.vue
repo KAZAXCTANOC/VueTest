@@ -16,6 +16,6 @@ export default {
         background: none;
         color: teal;
         border: 1px solid teal;
-        width: 100%;
+        width: 150px;
     }
 </style>
